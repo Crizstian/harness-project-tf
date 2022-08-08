@@ -1,0 +1,15 @@
+version: "1"
+instances:
+- name: osx-anka
+  default: true
+  type: anka   
+  pool: 2    
+  limit: 100  
+  platform:
+    os: darwin
+    arch: arm
+  spec:
+    account:
+      username: harness-runner
+      password: admin
+    vm_id: Harness-Runner-arm
