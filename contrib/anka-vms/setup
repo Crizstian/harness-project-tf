@@ -43,3 +43,6 @@ sudo /Volumes/Docker/Docker.app/Contents/MacOS/install
 sudo hdiutil detach /Volumes/Docker
 
 
+
+
+anka --debug create -a latest drone-osx-runner --ram-size 8G --cpu-count 4 --disk-size 100G
