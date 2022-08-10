@@ -14,12 +14,12 @@ resource "null_resource" "download_k8s_delegate_manifest" {
     }
 }
 
-resource "null_resource" "deploy_k8s_delegate" {
-    for_each   = local.k8s_delegates
-    depends_on = [null_resource.download_k8s_delegate_manifest]
+# resource "null_resource" "deploy_k8s_delegate" {
+#     for_each   = local.k8s_delegates
+#     depends_on = [null_resource.download_k8s_delegate_manifest]
 
-    provisioner "local-exec" {
-        working_dir = path.root
-        command     = "kubectl ${var.kubeconfig_path} apply -f ../contrib/manifests/${each.value.k8s_manifest}"
-    }
-}
+#     provisioner "local-exec" {
+#         working_dir = path.root
+#         command     = "kubectl ${var.kubeconfig_path} apply -f ../contrib/manifests/${each.value.k8s_manifest}"
+#     }
+# }
