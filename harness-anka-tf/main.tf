@@ -65,44 +65,57 @@ resource "aws_ec2_host" "test" {
   auto_placement    = "on"
 
   tags = {
-    Owner  = "Cristian Ramirez"
-    Region = "SE LATAM"
-    Name   = "anka-osx"
+      Owner   = "Cristian Ramirez"
+      Squad   = "SE LATAM"
+      Name    = "anka-osx"
+      ttl     = "-1"
+      App     = "anka ios builds"
+      Purpose = "Demo ios builds with Harness"
   }
 }
 
 data "template_file" "user_data" {
   template = file("../contrib/anka-vms/user-data.tpl")
   vars = {
-    NEW_PASSWORD = var.anka_host_password
-    VERSION      = "12.4"
+    NEW_PASSWORD     = var.anka_host_password
+    VERSION          = "12.5"
+    VM_NAME          = "harness-osx-runner"
+    RAM_SIZE         = "8G"
+    CPU_COUNT        = "4"
+    DISK_SIZE        = "100G"
+    ANKA_VM_USERNAME = var.anka_vm_username
+    ANKA_VM_PASSWORD = var.anka_vm_password
+    POOL_NAME        = "osx-anka"
   }
 }
 
 resource "aws_instance" "anka" {
-    depends_on                  = [aws_ec2_host.test]
-    ami                         = data.aws_ami.anka.id
-    instance_type               = "mac1.metal"
-    associate_public_ip_address = true
-    vpc_security_group_ids      = [aws_security_group.allow_sg.id]
-    availability_zone           = "us-east-2b"
-    tenancy                     = "host"
-    key_name                    = aws_key_pair.anka.key_name
-    user_data                   = data.template_file.user_data.rendered
-    
-    ebs_block_device {
-        device_name = "/dev/sda1"
-        iops        = "6000"
-        volume_size = 500
-        volume_type = "gp3"
-        throughput  = "256"
-    }
+  depends_on                  = [aws_ec2_host.test]
+  ami                         = data.aws_ami.anka.id
+  instance_type               = "mac1.metal"
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.allow_sg.id]
+  availability_zone           = "us-east-2b"
+  tenancy                     = "host"
+  key_name                    = aws_key_pair.anka.key_name
+  user_data                   = data.template_file.user_data.rendered
+  
+  ebs_block_device {
+      device_name = "/dev/sda1"
+      iops        = "6000"
+      volume_size = 500
+      volume_type = "gp3"
+      throughput  = "256"
+  }
 
-    tags = {
-        Owner  = "Cristian Ramirez"
-        Region = "SE LATAM"
-        Name   = "anka-osx"
-    }
+  tags = {
+      Owner   = "Cristian Ramirez"
+      Squad   = "SE LATAM"
+      Name    = "anka-osx"
+      ttl     = "-1"
+      App     = "anka ios builds"
+      Purpose = "Demo ios builds with Harness"
+  }
 }
 
 output "anka-vm" {
