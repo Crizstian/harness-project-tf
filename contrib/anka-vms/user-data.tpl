@@ -2,8 +2,8 @@
 
 function install_requirements {
  cat << 'EOF' > /tmp/install-harness-requirements.sh
-    #export NONINTERACTIVE=1
-    #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" 
+    export NONINTERACTIVE=1
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" 
     brew install wget tmux
 
     sudo wget https://desktop.docker.com/mac/main/amd64/Docker.dmg
@@ -25,7 +25,7 @@ function setup_machine {
     sudo /usr/bin/dscl . -passwd /Users/ec2-user zbun0ok= ${NEW_PASSWORD}
 }
 
-function generate_yaml {
+function generate_env {
     export IPA=$(ifconfig -l | xargs -n1 ipconfig getifaddr)
     cat << EOF > ~/runner/.env
     DRONE_RUNNER_HOST=$${IPA}
@@ -36,29 +36,30 @@ function generate_yaml {
 EOF
 }
 
-function generate_yaml {
+function generate_pool {
     cat << EOF > ~/runner/pool.yml
-    version: "1"
-    instances:
-    - name: ${POOL_NAME}
-    default: true
-    type: anka   
-    pool: 2    
-    limit: 100  
-    platform:
-        os: darwin
-        arch: amd64
-    spec:
-        account:
-        username: ${ANKA_VM_USERNAME}
-        password: ${ANKA_VM_PASSWORD}
-        vm_id: ${VM_NAME}
+version: "1"
+instances:
+- name: ${POOL_NAME}
+  default: true
+  type: anka   
+  pool: 2    
+  limit: 100  
+  platform:
+      os: darwin
+      arch: amd64
+  spec:
+      account:
+      username: ${ANKA_VM_USERNAME}
+      password: ${ANKA_VM_PASSWORD}
+      vm_id: ${VM_NAME}
 EOF
 }
 
 function setup_runner {
     mkdir ~/runner
-    generate_yaml
+    generate_env
+    generate_pool
     cd ~/runner
     wget https://github.com/drone-runners/drone-runner-aws/releases/download/v1.0.0-rc.8/drone-runner-aws-darwin-amd64
     chmod +x drone-runner-aws-darwin-amd64
@@ -70,6 +71,8 @@ function main {
     setup_machine
 
     anka --debug create -a /Applications/Install\ macOS\ Monterey.app ${VM_NAME} --ram-size ${RAM_SIZE} --cpu-count ${CPU_COUNT} --disk-size ${DISK_SIZE}
+
+    anka start ${VM_NAME}
 
     setup_runner
 }
