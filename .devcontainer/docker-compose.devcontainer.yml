@@ -26,8 +26,8 @@ services:
   #     - server
   devcontainer:
     environment:
-      VAULT_ADDR: http://vault:8200
-      VAULT_TOKEN: root
+      # VAULT_ADDR: http://vault:8200
+      # VAULT_TOKEN: root
     build:
       context: ../contrib/docker
       dockerfile: dev.Dockerfile

@@ -20,7 +20,7 @@ module "project_connectors" {
 module "project_pipelines" {
     source                   = "../modules/harness_pipelines"
     # connector setup
-    harness_pipelines        = {}
+    harness_pipelines        = local.harness_pipelines
     harness_platform_project = data.terraform_remote_state.bootstrap_project.outputs.project
 
     providers = {

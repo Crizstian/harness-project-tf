@@ -1,0 +1,47 @@
+pipeline:
+    name: ios-ff-sample
+    identifier: terraform_generated_pipeline
+    projectIdentifier: ios_face_app_sample
+    orgIdentifier: cristian_lab_org
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: account.lrgithub
+                repoName: ff-ios-client-sample
+                build: <+input>
+    stages:
+        - stage:
+              name: init
+              identifier: init
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: VM
+                      spec:
+                          type: Pool
+                          spec:
+                              poolName: osx-anka
+                              os: MacOS
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: hello world
+                                identifier: hello_world
+                                spec:
+                                    shell: Bash
+                                    command: |-
+                                        echo "hello world"
+
+                                        ls -la
+                                description: testing step
+                                failureStrategies: []
+                          - step:
+                                type: Run
+                                name: compile code
+                                identifier: compile_code
+                                spec:
+                                    shell: Sh
+                                    command: "xcodebuild -allowProvisioningUpdates "
