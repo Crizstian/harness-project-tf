@@ -49,8 +49,4 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/b
   sudo mv ./kubectl /usr/local/bin/kubectl && \
   kubectl version --client
 
-RUN git clone https://github.com/Gallore/yaml_cli && \
-  cd yaml_cli && \
-  pip install .
-
 WORKDIR /workspace

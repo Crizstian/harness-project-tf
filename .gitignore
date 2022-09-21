@@ -7,3 +7,4 @@ contrib/manifests/*.yml
 contrib/runner/drone*
 contrib/runner/.env
 contrib/runner/database*
+sales.json

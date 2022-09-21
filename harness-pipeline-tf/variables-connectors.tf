@@ -8,7 +8,9 @@ locals {
                 url                = "https://github.com/Crizstian"
                 delegate_selectors = ["local-environment"]
                 validation_repo    = "harness-as-code"
-                org_id             = ""
+                account_level      = false
+                org_level          = false
+                proj_level         = false
                 credentials = {
                     http = {
                         username  = "crizstian"

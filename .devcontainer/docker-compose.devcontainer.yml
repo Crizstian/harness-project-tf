@@ -25,7 +25,7 @@ services:
   #   depends_on:
   #     - server
   devcontainer:
-    environment:
+    # environment:
       # VAULT_ADDR: http://vault:8200
       # VAULT_TOKEN: root
     build:

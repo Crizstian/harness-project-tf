@@ -10,7 +10,7 @@ data "terraform_remote_state" "harness_anka" {
 module "bootstrap_project" {
     source                        = "../modules/harness_project"
     # project setup
-    create_org                    = true
+    create_org                    = false
     harness_platform_organization = var.harness_platform_organization 
     harness_platform_project      = var.harness_platform_project
     
